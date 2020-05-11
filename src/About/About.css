@@ -1,0 +1,13 @@
+#content {
+	text-align: center;
+}
+
+.card {
+	margin: auto;
+	text-align: left;
+	border-radius: 30px;
+}
+
+.card img {
+	border-radius: 30px;
+}

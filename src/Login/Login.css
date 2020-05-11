@@ -1,0 +1,13 @@
+.LoginFormEnd {
+	padding: 0;
+}
+
+.register {
+	padding: 0;
+	margin-top: 20px;
+}
+
+.register .nav-link {
+	padding-left: 0;
+	color: cyan;
+}
