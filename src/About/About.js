@@ -3,7 +3,6 @@ import { Container, Card, Button } from 'react-bootstrap';
 import logo from '../logo.svg';
 
 import './About.css';
-import profile from './profile.jpeg';
 
 
 function About() {

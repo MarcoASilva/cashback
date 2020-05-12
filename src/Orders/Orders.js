@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React  from 'react';
 import logo from '../Common/logo.png';
 import './Orders.css';
-import { Table, Container, Button } from 'react-bootstrap';
+import { Table, Container } from 'react-bootstrap';
 import { useFetch } from '../Hooks/Hooks';
 
 function Orders() {
@@ -9,8 +9,6 @@ function Orders() {
   const [orders, loading] = useFetch(
     process.env.REACT_APP_ORDERS_URL
   );
-
-  console.log(process.env.REACT_APP_ORDERS_URL);
 
   const rows = orders.map(order =>
     <tr key="{order.id}">
