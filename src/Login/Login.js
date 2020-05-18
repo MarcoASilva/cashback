@@ -38,6 +38,8 @@ function Login() {
         setError(true);
       }
 
+      sessionStorage.setItem('loggedUser', JSON.stringify(user));
+
     } else {
 
       event.preventDefault();
