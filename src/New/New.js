@@ -8,49 +8,42 @@ import './New.css';
 
 const New = (props) => {
 
-	const initialState = { open: props.open || false }
-	// let initialFormData = props.order || {};
+	const initialState = { open: props.open || false, formData: props.order || {} };
+
+	console.log(initialState);
 
 	const [state, setState] = useState(initialState);
-	// const [formData, setFormData] = useState(initialFormData);
-
-	let formData = props.order || { };
 
 	const openModal = () => {
-		setState({ open: true });
+		setState({ open: true, formData: {} });
 	}
 
 	const closeModal = () => {
-		// setFormData({});
 		document.getElementById("NewOrderForm").reset();
-		setState({ open: false });
+		setState({ open: false, formData: {} });
 	}
 
 	const save = (event) => {
 
-		event.preventDefault();
+		try {
+			var savedAdditionalOrders = JSON.parse(localStorage.getItem('additionalOrders'));
+		} catch (error) {
+			return localStorage.setItem('additionalOrders', JSON.stringify([state.formData]));
+		}
 
-		if (formData.id) {
-
-			try {
-				var savedAdditionalOrders = JSON.parse(localStorage.getItem('additionalOrders'));
-			} catch (error) {
-				localStorage.setItem('additionalOrders', JSON.stringify([formData]));
-			}
+		if (state.formData.id) {
 			if (Array.isArray(savedAdditionalOrders)) {
-				(savedAdditionalOrders = savedAdditionalOrders.filter(order => order.id !== formData.id)).push(formData);
+				(savedAdditionalOrders = savedAdditionalOrders.filter(order => order.id !== state.formData.id)).push(state.formData);
 				localStorage.setItem('additionalOrders', JSON.stringify(savedAdditionalOrders));
 			} else {
-				localStorage.setItem('additionalOrders', JSON.stringify([formData]));
+				localStorage.setItem('additionalOrders', JSON.stringify([state.formData]));
 			}
-
 			return;
-
 		}
 
 		const cashbackPercentage = Math.ceil(Math.random() * 20);
 
-		const newOrder = { ...formData, id: Math.ceil(Math.random() * 10000), cashbackPercentage: cashbackPercentage, cashbackAbsolute: (formData.price * cashbackPercentage / 100), status: 0, statusText: "Em Análise" };
+		const newOrder = { ...state.formData, id: Math.ceil(Math.random() * 10000), cashbackPercentage: cashbackPercentage, cashbackAbsolute: (state.formData.price * cashbackPercentage / 100), status: 0, statusText: "Em Análise" };
 
 		if (Array.isArray(savedAdditionalOrders)) {
 			savedAdditionalOrders.push(newOrder);
@@ -61,10 +54,9 @@ const New = (props) => {
 	}
 
 	const handleChange = (event) => {
-		// const updatedFormData = {...formData};
-		formData[event.target.id] = event.target.value;
-		// setFormData(updatedFormData);
-		setState({ open: true });
+		const { id, code, price, date, cashbackAbsolute, cashbackPercentage, status, statusTex } = state.formData;
+		const updatedFormData = Object.assign({ id, code, price, date, cashbackAbsolute, cashbackPercentage, status, statusTex }, { [event.target.id]: event.target.value });
+		setState({ open: true, formData: updatedFormData });
 	}
 
 	return <div>
@@ -88,23 +80,23 @@ const New = (props) => {
 					<Row>
 						<Col>
 							<Form.Group controlId="code">
-								<Form.Control required type="number" placeholder="Código" value={formData.code} onChange={handleChange} />
+								<Form.Control required type="number" placeholder="Código" value={state.formData.code || ''} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 						<Col>
 							<Form.Group controlId="price">
-								<Form.Control required type="number" step="0.01" min="1" placeholder="Valor" value={formData.price} onChange={handleChange} />
+								<Form.Control required type="number" step="0.01" min="1" placeholder="Valor" value={state.formData.price || ''} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 						<Col>
 							<Form.Group controlId="date">
-								<Form.Control required type="date" placeholder="Data" value={formData.date} onChange={handleChange} />
+								<Form.Control required type="date" placeholder="Data" value={state.formData.date || ''} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 					</Row>
 					<hr></hr>
 					{
-						formData.id ?
+						state.formData.id ?
 							(
 								<Button variant="success" type="submit">
 									Salvar
