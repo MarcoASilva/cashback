@@ -33,13 +33,13 @@ const New = (props) => {
 		if (formData.id) {
 
 			try {
-				var additionalOrders = JSON.parse(localStorage.getItem('additionalOrders'));
+				var savedAdditionalOrders = JSON.parse(localStorage.getItem('additionalOrders'));
 			} catch (error) {
 				localStorage.setItem('additionalOrders', JSON.stringify([formData]));
 			}
-			if (Array.isArray(additionalOrders)) {
-				(additionalOrders = additionalOrders.filter(order => order.id !== formData.id)).push(formData);
-				localStorage.setItem('additionalOrders', JSON.stringify(additionalOrders));
+			if (Array.isArray(savedAdditionalOrders)) {
+				(savedAdditionalOrders = savedAdditionalOrders.filter(order => order.id !== formData.id)).push(formData);
+				localStorage.setItem('additionalOrders', JSON.stringify(savedAdditionalOrders));
 			} else {
 				localStorage.setItem('additionalOrders', JSON.stringify([formData]));
 			}
@@ -52,14 +52,9 @@ const New = (props) => {
 
 		const newOrder = { ...formData, id: Math.ceil(Math.random() * 10000), cashbackPercentage: cashbackPercentage, cashbackAbsolute: (formData.price * cashbackPercentage / 100), status: 0, statusText: "Em Análise" };
 
-		try {
-			var additionalOrders = JSON.parse(localStorage.getItem('additionalOrders'));
-		} catch (error) {
-			localStorage.setItem('additionalOrders', JSON.stringify([newOrder]));
-		}
-		if (Array.isArray(additionalOrders)) {
-			additionalOrders.push(newOrder);
-			localStorage.setItem('additionalOrders', JSON.stringify(additionalOrders));
+		if (Array.isArray(savedAdditionalOrders)) {
+			savedAdditionalOrders.push(newOrder);
+			localStorage.setItem('additionalOrders', JSON.stringify(savedAdditionalOrders));
 		} else {
 			localStorage.setItem('additionalOrders', JSON.stringify([newOrder]));
 		}
@@ -98,7 +93,7 @@ const New = (props) => {
 						</Col>
 						<Col>
 							<Form.Group controlId="price">
-								<Form.Control required type="number" placeholder="0.00" step="0.01" min="1" placeholder="Valor" value={formData.price} onChange={handleChange} />
+								<Form.Control required type="number" step="0.01" min="1" placeholder="Valor" value={formData.price} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 						<Col>
