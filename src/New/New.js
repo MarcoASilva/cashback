@@ -8,14 +8,15 @@ import './New.css';
 
 const New = (props) => {
 
-	const initialState = { open: props.open || false, formData: props.order || {} };
+	const defaultForm = { code: '', price: '', date: '' };
 
-	console.log(initialState);
+	const initialState = { open: false, formData: props.order || defaultForm };
 
 	const [state, setState] = useState(initialState);
 
 	const openModal = () => {
-		setState({ open: true, formData: {} });
+		console.log(props.order);
+		setState({ open: true, formData: props.order || defaultForm });
 	}
 
 	const closeModal = () => {
@@ -80,17 +81,17 @@ const New = (props) => {
 					<Row>
 						<Col>
 							<Form.Group controlId="code">
-								<Form.Control required type="number" placeholder="Código" value={state.formData.code || ''} onChange={handleChange} />
+								<Form.Control required type="number" placeholder="Código" value={state.formData.code} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 						<Col>
 							<Form.Group controlId="price">
-								<Form.Control required type="number" step="0.01" min="1" placeholder="Valor" value={state.formData.price || ''} onChange={handleChange} />
+								<Form.Control required type="number" step="0.01" min="1" placeholder="Valor" value={state.formData.price} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 						<Col>
 							<Form.Group controlId="date">
-								<Form.Control required type="date" placeholder="Data" value={state.formData.date || ''} onChange={handleChange} />
+								<Form.Control required type="date" placeholder="Data" value={state.formData.date} onChange={handleChange} />
 							</Form.Group>
 						</Col>
 					</Row>

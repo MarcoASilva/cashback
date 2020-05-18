@@ -19,6 +19,12 @@ function Orders(props) {
   const [orders, setOrders] = useState(initialOrders);
   const [editingOrder, setEditingOrder] = useState(null);
 
+  useEffect(() => {
+    if (editingOrder) {
+      document.querySelector('#new-btn').click();
+    }
+  }, [orders, editingOrder])
+
   const editOrder = (order) => {
     setEditingOrder(order);
     document.querySelector('#new-btn').click();
